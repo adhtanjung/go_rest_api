@@ -1,4 +1,4 @@
-module go_rest
+module go_rest_gin
 
 go 1.16
 
