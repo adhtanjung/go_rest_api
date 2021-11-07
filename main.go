@@ -1,14 +1,15 @@
 package main
 
 import (
-	"go_rest_gin/routes"
 	"log"
+	"rest_api_gin/config"
+	"rest_api_gin/routes"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-
+	config.Connect()
 	router := gin.Default()
 	// router.GET("/", func(c *gin.Context) {
 	// 	c.JSON(200, gin.H{
