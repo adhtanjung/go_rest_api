@@ -9,12 +9,12 @@ import (
 
 func Routes(router *gin.Engine) {
 
-	router.GET("/", welcome)
-	router.GET("/users", controllers.GetAllUsers)
-	router.POST("/user", controllers.CreateUser)
-	router.GET("/user/:userId", controllers.GetSingleUser)
-	router.PUT("/user/:userId", controllers.EditUser)
-	router.DELETE("/user/:userId", controllers.DeleteUser)
+	router.GET("/api", welcome)
+	router.GET("/api/users", controllers.GetAllUsers)
+	router.POST("/api/user", controllers.CreateUser)
+	router.GET("/api/ser/:userId", controllers.GetSingleUser)
+	router.PUT("/api/user/:userId", controllers.EditUser)
+	router.DELETE("/api/user/:userId", controllers.DeleteUser)
 	router.NoRoute(notFound)
 
 }

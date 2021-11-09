@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"rest_api_gin/dto"
 	"time"
 
 	"context"
@@ -32,15 +33,24 @@ func UserCollection(c *mongo.Database) {
 	collection = c.Collection("users")
 }
 
+// ShowAccount godoc
+// @Summary Show a account
+// @Description get all users
+// @Produce  json
+// @Success 200 {object} []User
+// @Header 200 {string} Token "qwerty"
+// @Failure 400,404 {object} dto.Response
+// @Failure 500 {object} dto.Response
+// @Router /users [get]
 func GetAllUsers(c *gin.Context) {
 	users := []User{}
 	cursor, err := collection.Find(context.TODO(), bson.M{})
 
 	if err != nil {
 		log.Printf("Error while getting all users, reason: %v\n", err)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"status":  http.StatusInternalServerError,
-			"message": "Error while getting all users",
+		c.JSON(http.StatusInternalServerError, &dto.Response{
+			Status:  http.StatusInternalServerError,
+			Message: "Error while getting all users",
 		})
 		return
 	}
@@ -51,10 +61,10 @@ func GetAllUsers(c *gin.Context) {
 		users = append(users, user)
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"status":  http.StatusOK,
-		"message": "Successfully got all users",
-		"data":    users,
+	c.JSON(http.StatusOK, &dto.ResponseWithData{
+		Status:  http.StatusOK,
+		Message: "Successfully got all users",
+		Data:    users,
 	})
 	return
 }
@@ -99,6 +109,18 @@ func CreateUser(c *gin.Context) {
 
 }
 
+// ShowAccount godoc
+// @Summary Show a account
+// @Description get string by ID
+// @ID get-string-by-int
+// @Accept  json
+// @Produce  json
+// @Param id path int true "Account ID"
+// @Success 200 {object} User
+// @Header 200 {string} Token "qwerty"
+// @Failure 400,404 {object} dto.Response
+// @Failure 500 {object} dto.Response
+// @Router /user/{userId} [get]
 func GetSingleUser(c *gin.Context) {
 	userId := c.Param("userId")
 	user := User{}
@@ -107,10 +129,11 @@ func GetSingleUser(c *gin.Context) {
 
 	if err != nil {
 		log.Printf("Error while getting single user, reason: %v\n", err)
-		c.JSON(http.StatusNotFound, gin.H{
-			"status":  http.StatusNotFound,
-			"message": "User not found",
+		c.JSON(http.StatusNotFound, &dto.Response{
+			Status:  http.StatusNotFound,
+			Message: "User not found",
 		})
+
 		return
 	}
 
